@@ -1,0 +1,6 @@
+# Account Bridge
+*.db
+*.bak
+*.dat
+*.dir
+*.json

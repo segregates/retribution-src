@@ -1,0 +1,10 @@
+RepairRate = 500
+RepairPeriod = 2
+FalloffShift = 500
+FalloffMultiplier = 0.000339683
+SpeedModifier = 1.0
+ArmorAbsorb = 0.7
+ArmorBounce = 0.2
+NPCArmorModifier = 0.5
+NPCDamageIn = 2.0
+NPCDamageOut = 1.8

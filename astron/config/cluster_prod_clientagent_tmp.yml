@@ -1,0 +1,49 @@
+daemon:
+    name: Client Agent
+
+general:
+    eventlogger: [$eventLoggerIp]
+    dc_files:
+        - ../dclass/otp.dc
+        - ../dclass/pirates.dc
+
+messagedirector:
+    connect: [$astronIp]
+
+uberdogs:
+    - class: ClientServicesManager
+      id: 1000
+      anonymous: true
+
+    - class: DistributedTravelAgent
+      id: 1001
+      anonymous: false
+
+    - class: PiratesFriendsManager
+      id: 1002
+      anonymous: false
+    
+    - class: DistributedCrewMatchManager
+      id: 1003
+      anonymous: false
+
+    - class: DistributedMatchMaker
+      id: 1004
+      anonymous: false
+
+    - class: GuildManager
+      id: 1005
+      anonymous: false
+
+roles:
+    - type: clientagent
+      bind: 0.0.0.0:29150
+      version: "[$version]"
+      client:
+          relocate: true
+          add_interest: enabled
+          send_hash: false
+          send_version: false
+      channels:
+          min: 1000000000
+          max: 1000001000

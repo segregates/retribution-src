@@ -1,0 +1,461 @@
+from pirates.battle import WeaponGlobals
+from UberDogGlobals import InventoryType, InventoryCategory
+
+# Update this whenever needed (note that the number MUST BE +1)
+# DO NOT REUSE A NUMBER ALREADY LOGGED BELOW
+# Max value: 255
+UberDogRevision = 5
+
+# Changelog:
+# <date unknown> : version 164 (from Disney) : initial
+# 23/apr/2015 : version 2 : added want-all-weapons-trained
+# 18/may/2015 : version 3 : weapons
+# 29/may/2015 : version 4 : fix skills
+# 29/may/2015 : version 5 : changed weapons
+
+CategoryLimits = {
+    InventoryCategory.QUESTS: 255,
+    InventoryCategory.MONEY: 4,
+    InventoryCategory.MAX_PLAYER_ATTRIBUTES: 2,
+    InventoryCategory.WEAPONS: 100,
+    InventoryCategory.WEAPON_SKILL_MELEE: 100,
+    InventoryCategory.WEAPON_SKILL_CUTLASS: 100,
+    InventoryCategory.WEAPON_SKILL_PISTOL: 100,
+    InventoryCategory.WEAPON_SKILL_MUSKET: 100,
+    InventoryCategory.WEAPON_SKILL_DAGGER: 100,
+    InventoryCategory.WEAPON_SKILL_GRENADE: 100,
+    InventoryCategory.WEAPON_SKILL_DOLL: 100,
+    InventoryCategory.WEAPON_SKILL_WAND: 100,
+    InventoryCategory.WEAPON_SKILL_KETTLE: 100,
+    InventoryCategory.WEAPON_SKILL_CANNON: 100,
+    InventoryCategory.WEAPON_SKILL_ITEM: 100,
+    InventoryCategory.SKILL_SAILING: 100,
+    InventoryCategory.WEAPON_SKILL_FISHING: 100,
+    InventoryCategory.WAGERS: 100,
+    InventoryCategory.KEY_ITEMS: 30,
+    InventoryCategory.TELEPORT_TOKENS: 30,
+    InventoryCategory.CONSUMABLES: 50,
+    InventoryCategory.SHIPS: 3,
+    InventoryCategory.SHIP_ACCESSORIES: 250,
+    InventoryCategory.SHIP_CANNONS: 200,
+    InventoryCategory.FLAGS: 5,
+    InventoryCategory.COLLECTIONS: 250,
+    InventoryCategory.FISH_CAUGHT: 20,
+    InventoryCategory.TREASURE_MAPS: 3,
+    InventoryCategory.QUEST_SLOTS: 255,
+    InventoryCategory.ACCUMULATORS: 20,
+    InventoryCategory.REPAIR_TOKENS: 2,
+    InventoryCategory.WEAPON_PISTOL_AMMO: 200,
+    InventoryCategory.WEAPON_MUSKET_AMMO: 200,
+    InventoryCategory.WEAPON_GRENADE_AMMO: 200,
+    InventoryCategory.WEAPON_CANNON_AMMO: 200,
+    InventoryCategory.WEAPON_DAGGER_AMMO: 200,
+    InventoryCategory.UNSPENT_SKILL_POINTS: 100,
+    InventoryCategory.VITAE_PENALTY: 10000,
+    InventoryCategory.PLAYER_RANKING: 10000,
+    InventoryCategory.CARDS: 100,
+    InventoryCategory.PISTOL_POUCHES: 10,
+    InventoryCategory.DAGGER_POUCHES: 10,
+    InventoryCategory.GRENADE_POUCHES: 10,
+    InventoryCategory.CANNON_POUCHES: 10,
+    InventoryCategory.SONGS: 100,
+    InventoryCategory.FISHING_LURES: 1000,
+    InventoryCategory.FISHING_ROD: 1,
+    InventoryCategory.HAVE_CRAFTED_FLAGS: 100,
+    InventoryCategory.CONTEXTUAL_TUTORIAL_TYPES: 100,
+    InventoryCategory.CONTEXTUAL_TUTORIALS: 1000,
+    InventoryCategory.NUM_RESPEC: 20,
+    InventoryCategory.PVP_RENOWN: 10 }
+CategoryLimits[InventoryCategory.CATEGORY] = 255
+StackLimits = {
+    InventoryType.MeleePunch: 6,
+    InventoryType.MeleeKick: 6,
+    InventoryType.SailBroadsideLeft: 6,
+    InventoryType.SailBroadsideRight: 6,
+    InventoryType.SailFullSail: 6,
+    InventoryType.SailComeAbout: 6,
+    InventoryType.SailOpenFire: 6,
+    InventoryType.SailRammingSpeed: 6,
+    InventoryType.SailTakeCover: 6,
+    InventoryType.SailWindcatcher: 6,
+    InventoryType.SailTacking: 6,
+    InventoryType.SailPowerRecharge: 2,
+    InventoryType.CutlassHack: 6,
+    InventoryType.CutlassSlash: 6,
+    InventoryType.DaggerCut: 6,
+    InventoryType.DaggerSwipe: 6,
+    InventoryType.AmmoAsp: 100,
+    InventoryType.AmmoAdder: 50,
+    InventoryType.AmmoSidewinder: 50,
+    InventoryType.AmmoViperNest: 25,
+    InventoryType.PistolShoot: 6,
+    InventoryType.PistolLeadShot: 6,
+    InventoryType.AmmoLeadShot: 6,
+    InventoryType.AmmoBaneShot: 100,
+    InventoryType.AmmoSilverShot: 100,
+    InventoryType.AmmoHexEaterShot: 100,
+    InventoryType.AmmoSteelShot: 100,
+    InventoryType.AmmoVenomShot: 100,
+    InventoryType.CannonShoot: 6,
+    InventoryType.CannonRoundShot: 6,
+    InventoryType.CannonGrappleHook: 6,
+    InventoryType.AmmoRoundShot: 1,
+    InventoryType.AmmoChainShot: 100,
+    InventoryType.AmmoExplosive: 3,
+    InventoryType.AmmoGrapeShot: 100,
+    InventoryType.AmmoFirebrand: 50,
+    InventoryType.AmmoThunderbolt: 50,
+    InventoryType.AmmoFury: 50,
+    InventoryType.AmmoGrappleHook: 100,
+    InventoryType.DollAttune: 6,
+    InventoryType.DollPoke: 6,
+    InventoryType.StaffBlast: 6,
+    InventoryType.StaffSoulFlay: 6,
+    InventoryType.GrenadeThrow: 6,
+    InventoryType.GrenadeExplosion: 6,
+    InventoryType.AmmoGrenadeExplosion: 75,
+    InventoryType.AmmoGrenadeShockBomb: 50,
+    InventoryType.AmmoGrenadeFlame: 50,
+    InventoryType.AmmoGrenadeSmoke: 25,
+    InventoryType.AmmoGrenadeLandMine: 25,
+    InventoryType.AmmoGrenadeSiege: 25,
+    InventoryType.PistolPouchL1: 1,
+    InventoryType.PistolPouchL2: 1,
+    InventoryType.PistolPouchL3: 1,
+    InventoryType.DaggerPouchL1: 1,
+    InventoryType.DaggerPouchL2: 1,
+    InventoryType.DaggerPouchL3: 1,
+    InventoryType.GrenadePouchL1: 1,
+    InventoryType.GrenadePouchL2: 1,
+    InventoryType.GrenadePouchL3: 1,
+    InventoryType.CannonPouchL1: 1,
+    InventoryType.CannonPouchL2: 1,
+    InventoryType.CannonPouchL3: 1,
+    InventoryType.UnspentCutlass: 50,
+    InventoryType.UnspentDagger: 50,
+    InventoryType.UnspentGrenade: 50,
+    InventoryType.UnspentWand: 50,
+    InventoryType.UnspentDoll: 50,
+    InventoryType.UnspentCannon: 50,
+    InventoryType.UnspentPistol: 50,
+    InventoryType.UnspentSailing: 50,
+    InventoryType.FishingRod: 3,
+    InventoryType.Vitae_Level: 100,
+    InventoryType.Vitae_Cost: 10000,
+    InventoryType.Vitae_Left: 10000,
+    InventoryType.Vitae_Update: 10000,
+    InventoryType.UseItem: 6,
+    InventoryType.UsePotion: 6,
+    InventoryType.RegularLure: 10,
+    InventoryType.LegendaryLure: 10,
+    InventoryType.CTFGame: 9999,
+    InventoryType.CTLGame: 9999,
+    InventoryType.PTRGame: 9999,
+    InventoryType.BTLGame: 9999,
+    InventoryType.TBTGame: 9999,
+    InventoryType.SBTGame: 9999,
+    InventoryType.ARMGame: 9999,
+    InventoryType.TKPGame: 9999,
+    InventoryType.BTBGame: 9999,
+    InventoryType.PokerGame: 9999,
+    InventoryType.BlackjackGame: 9999,
+    InventoryType.ShipPVPRank: 9999,
+    InventoryType.PVPTotalInfamyLand: 10000,
+    InventoryType.PVPCurrentInfamy: 50000,
+    InventoryType.PVPTotalInfamySea: 10000,
+    InventoryType.Collection_Set1: 2,
+    InventoryType.Collection_Set1_Part1: 99,
+    InventoryType.Collection_Set1_Part2: 99,
+    InventoryType.Collection_Set1_Part3: 99,
+    InventoryType.Collection_Set1_Part4: 99,
+    InventoryType.Collection_Set1_Part5: 99,
+    InventoryType.Collection_Set1_Part6: 99,
+    InventoryType.Collection_Set1_Part7: 99,
+    InventoryType.Collection_Set1_Part8: 99,
+    InventoryType.Collection_Set1_Part9: 99,
+    InventoryType.Collection_Set1_Part10: 99,
+    InventoryType.Collection_Set1_Part11: 99,
+    InventoryType.Collection_Set1_Part12: 99,
+    InventoryType.Collection_Set1_Part13: 99,
+    InventoryType.Collection_Set1_Part14: 99,
+    InventoryType.Collection_Set1_Part15: 99,
+    InventoryType.Collection_Set1_Part16: 99,
+    InventoryType.Collection_Set1_Part17: 99,
+    InventoryType.Collection_Set1_Part18: 99,
+    InventoryType.Collection_Set1_Part19: 99,
+    InventoryType.Collection_Set1_Part20: 99,
+    InventoryType.Collection_Set2: 2,
+    InventoryType.Collection_Set2_Part1: 99,
+    InventoryType.Collection_Set2_Part2: 99,
+    InventoryType.Collection_Set2_Part3: 99,
+    InventoryType.Collection_Set2_Part4: 99,
+    InventoryType.Collection_Set2_Part5: 99,
+    InventoryType.Collection_Set2_Part6: 99,
+    InventoryType.Collection_Set2_Part7: 99,
+    InventoryType.Collection_Set2_Part8: 99,
+    InventoryType.Collection_Set2_Part9: 99,
+    InventoryType.Collection_Set2_Part10: 99,
+    InventoryType.Collection_Set2_Part11: 99,
+    InventoryType.Collection_Set2_Part12: 99,
+    InventoryType.Collection_Set2_Part13: 99,
+    InventoryType.Collection_Set2_Part14: 99,
+    InventoryType.Collection_Set2_Part15: 99,
+    InventoryType.Collection_Set2_Part16: 99,
+    InventoryType.Collection_Set2_Part17: 99,
+    InventoryType.Collection_Set2_Part18: 99,
+    InventoryType.Collection_Set2_Part19: 99,
+    InventoryType.Collection_Set2_Part20: 99,
+    InventoryType.Collection_Set3: 2,
+    InventoryType.Collection_Set3_Part1: 99,
+    InventoryType.Collection_Set3_Part2: 99,
+    InventoryType.Collection_Set3_Part3: 99,
+    InventoryType.Collection_Set3_Part4: 99,
+    InventoryType.Collection_Set3_Part5: 99,
+    InventoryType.Collection_Set3_Part6: 99,
+    InventoryType.Collection_Set3_Part7: 99,
+    InventoryType.Collection_Set3_Part8: 99,
+    InventoryType.Collection_Set3_Part9: 99,
+    InventoryType.Collection_Set4: 2,
+    InventoryType.Collection_Set4_Part1: 99,
+    InventoryType.Collection_Set4_Part2: 99,
+    InventoryType.Collection_Set4_Part3: 99,
+    InventoryType.Collection_Set4_Part4: 99,
+    InventoryType.Collection_Set4_Part5: 99,
+    InventoryType.Collection_Set4_Part6: 99,
+    InventoryType.Collection_Set4_Part7: 99,
+    InventoryType.Collection_Set4_Part8: 99,
+    InventoryType.Collection_Set4_Part9: 99,
+    InventoryType.Collection_Set4_Part10: 99,
+    InventoryType.Collection_Set4_Part11: 99,
+    InventoryType.Collection_Set4_Part12: 99,
+    InventoryType.Collection_Set4_Part13: 99,
+    InventoryType.Collection_Set4_Part14: 99,
+    InventoryType.Collection_Set5: 2,
+    InventoryType.Collection_Set5_Part1: 99,
+    InventoryType.Collection_Set5_Part2: 99,
+    InventoryType.Collection_Set5_Part3: 99,
+    InventoryType.Collection_Set5_Part4: 99,
+    InventoryType.Collection_Set5_Part5: 99,
+    InventoryType.Collection_Set5_Part6: 99,
+    InventoryType.Collection_Set5_Part7: 99,
+    InventoryType.Collection_Set6: 2,
+    InventoryType.Collection_Set6_Part1: 99,
+    InventoryType.Collection_Set6_Part2: 99,
+    InventoryType.Collection_Set6_Part3: 99,
+    InventoryType.Collection_Set6_Part4: 99,
+    InventoryType.Collection_Set6_Part5: 99,
+    InventoryType.Collection_Set6_Part6: 99,
+    InventoryType.Collection_Set6_Part7: 99,
+    InventoryType.Collection_Set6_Part8: 99,
+    InventoryType.Collection_Set6_Part9: 99,
+    InventoryType.Collection_Set6_Part10: 99,
+    InventoryType.Collection_Set6_Part11: 99,
+    InventoryType.Collection_Set7: 2,
+    InventoryType.Collection_Set7_Part1: 99,
+    InventoryType.Collection_Set7_Part2: 99,
+    InventoryType.Collection_Set7_Part3: 99,
+    InventoryType.Collection_Set7_Part4: 99,
+    InventoryType.Collection_Set7_Part5: 99,
+    InventoryType.Collection_Set7_Part6: 99,
+    InventoryType.Collection_Set7_Part7: 99,
+    InventoryType.Collection_Set7_Part8: 99,
+    InventoryType.Collection_Set7_Part9: 99,
+    InventoryType.Collection_Set7_Part10: 99,
+    InventoryType.Collection_Set7_Part11: 99,
+    InventoryType.Collection_Set7_Part12: 99,
+    InventoryType.Collection_Set8: 2,
+    InventoryType.Collection_Set8_Part1: 99,
+    InventoryType.Collection_Set8_Part2: 99,
+    InventoryType.Collection_Set8_Part3: 99,
+    InventoryType.Collection_Set8_Part4: 99,
+    InventoryType.Collection_Set8_Part5: 99,
+    InventoryType.Collection_Set8_Part6: 99,
+    InventoryType.Collection_Set8_Part7: 99,
+    InventoryType.Collection_Set8_Part8: 99,
+    InventoryType.Collection_Set8_Part9: 99,
+    InventoryType.Collection_Set8_Part10: 99,
+    InventoryType.Collection_Set8_Part11: 99,
+    InventoryType.Collection_Set8_Part12: 99,
+    InventoryType.Collection_Set8_Part13: 99,
+    InventoryType.Collection_Set8_Part14: 99,
+    InventoryType.Collection_Set8_Part15: 99,
+    InventoryType.Collection_Set9: 1,
+    InventoryType.Collection_Set9_Part1: 1,
+    InventoryType.Collection_Set9_Part2: 1,
+    InventoryType.Collection_Set9_Part3: 1,
+    InventoryType.Collection_Set9_Part4: 1,
+    InventoryType.Collection_Set9_Part5: 1,
+    InventoryType.Collection_Set9_Part6: 1,
+    InventoryType.Collection_Set9_Part7: 1,
+    InventoryType.Collection_Set9_Part8: 1,
+    InventoryType.Collection_Set9_Part9: 1,
+    InventoryType.Collection_Set9_Part10: 1,
+    InventoryType.Collection_Set9_Part11: 1,
+    InventoryType.Collection_Set9_Part12: 1,
+    InventoryType.Collection_Set10: 1,
+    InventoryType.Collection_Set10_Part1: 1000,
+    InventoryType.Collection_Set10_Part2: 1000,
+    InventoryType.Collection_Set10_Part3: 1000,
+    InventoryType.Collection_Set10_Part4: 1000,
+    InventoryType.Collection_Set10_Part5: 1000,
+    InventoryType.Collection_Set10_Part6: 1000,
+    InventoryType.Collection_Set10_Part7: 1000,
+    InventoryType.Collection_Set10_Part8: 1000,
+    InventoryType.Collection_Set10_Part9: 1000,
+    InventoryType.Collection_Set10_Part10: 1000,
+    InventoryType.Collection_Set10_Part11: 1000,
+    InventoryType.Collection_Set10_Part12: 1000,
+    InventoryType.Collection_Set10_Part13: 1000,
+    InventoryType.Collection_Set10_Part14: 1000,
+    InventoryType.Collection_Set10_Part15: 1000,
+    InventoryType.Collection_Set10_Part16: 1000,
+    InventoryType.Collection_Set10_Part17: 1000,
+    InventoryType.Collection_Set10_Part18: 1000,
+    InventoryType.Collection_Set10_Part19: 1000,
+    InventoryType.Collection_Set10_Part20: 1000,
+    InventoryType.Collection_Set11: 1,
+    InventoryType.Collection_Set11_Part1: 1000,
+    InventoryType.Collection_Set11_Part2: 1000,
+    InventoryType.Collection_Set11_Part3: 1000,
+    InventoryType.Collection_Set11_Part4: 1000,
+    InventoryType.Collection_Set11_Part5: 1000,
+    InventoryType.FishingRodStall: 2,
+    InventoryType.FishingRodPull: 2,
+    InventoryType.FishingRodHeal: 2,
+    InventoryType.FishingRodTug: 2,
+    InventoryType.FishingRodSink: 2,
+    InventoryType.FishingRodOceanEye: 2,
+    InventoryType.OpenQuestSlot: 255,
+    InventoryType.NewPlayerToken: 1,
+    InventoryType.NewWeaponToken: 1,
+    InventoryType.NewShipToken: 1,
+    InventoryType.Dinghy: 1,
+    InventoryType.SmallBottle: 5,
+    InventoryType.MediumBottle: 5,
+    InventoryType.LargeBottle: 5,
+    InventoryType.CutlassToken: 1,
+    InventoryType.PistolToken: 1,
+    InventoryType.MusketToken: 1,
+    InventoryType.DaggerToken: 1,
+    InventoryType.GrenadeToken: 1,
+    InventoryType.WandToken: 1,
+    InventoryType.DollToken: 1,
+    InventoryType.KettleToken: 1,
+    InventoryType.FirstDeathToken: 1,
+    InventoryType.PotionCraftingInstructionsToken: 1,
+    InventoryType.TortugaTeleportToken: 1,
+    InventoryType.PortRoyalTeleportToken: 1,
+    InventoryType.KingsheadTeleportToken: 1,
+    InventoryType.PadresDelFuegoTeleportToken: 1,
+    InventoryType.CubaTeleportToken: 1,
+    InventoryType.RavensCoveTeleportToken: 1,
+    InventoryType.PlayerHealToken: 1000,
+    InventoryType.PlayerMojoHealToken: 1000,
+    InventoryType.NumRespecCutlass: 32767,
+    InventoryType.NumRespecPistol: 32767,
+    InventoryType.NumRespecDoll: 32767,
+    InventoryType.NumRespecDagger: 32767,
+    InventoryType.NumRespecGrenade: 32767,
+    InventoryType.NumRespecStaff: 32767,
+    InventoryType.NumRespecCannon: 32767,
+    InventoryType.NumRespecSailing: 32767,
+    InventoryType.PvPRenownLand: 10000,
+    InventoryType.PvPRenownSea: 10000,
+    InventoryType.PvPPointsLand: 10000,
+    InventoryType.PvPPointsSea: 10000 }
+for i in xrange(52):
+    stack_limit = 100
+    StackLimits[InventoryType.begin_Cards + i] = stack_limit
+
+for i in xrange(InventoryType.begin_Songs, InventoryType.end_Songs):
+    StackLimits[i] = 1
+
+for i in xrange(InventoryType.begin_HaveMade, InventoryType.end_HaveMade):
+    StackLimits[i] = 1
+
+for i in xrange(InventoryType.begin_ContextTutTypes, InventoryType.end_ContextTutTypes):
+    StackLimits[i] = 1
+
+for i in xrange(InventoryType.begin_ContextTuts, InventoryType.end_ContextTuts):
+    if i == InventoryType.SailCommands:
+        StackLimits[i] = 10
+    elif i == InventoryType.BuyNewShip:
+        StackLimits[i] = 8
+    elif i == InventoryType.DockCommands:
+        StackLimits[i] = 20
+    elif i == InventoryType.DockCrewCommands:
+        StackLimits[i] = 2
+    else:
+        StackLimits[i] = 1
+
+StackStartsWith = {
+    InventoryType.Song_1: 1,
+    InventoryType.Song_2: 1,
+    InventoryType.Song_3: 1,
+    InventoryType.Song_4: 1,
+    InventoryType.Song_5: 1,
+    }
+
+if config.GetBool('want-all-weapons-trained', False):
+    for token in (InventoryType.PistolToken, InventoryType.MusketToken, InventoryType.DaggerToken,
+                  InventoryType.GrenadeToken, InventoryType.WandToken, InventoryType.DollToken,
+                  InventoryType.KettleToken):
+        StackStartsWith[token] = 1
+
+
+# Formula for calculating max level XP recursively. Give it the level you want for maxlevel, do not pass in anything to cur_rep or level
+def level_calc(maxlevel, cur_rep=50, level=1):
+    if level==maxlevel:
+        return 0
+    if level == 1:
+        return 50 + level_calc(maxlevel, 150, level+1)
+    elif level ==2:
+        return 150 + level_calc(maxlevel, 150, level+1)
+    elif level == 3:
+        return 300 + level_calc(maxlevel, 300, level+1)
+    elif level<=16:
+        return cur_rep+200 + level_calc(maxlevel, cur_rep+200, level+1)
+    else:
+        return cur_rep+300 + level_calc(maxlevel, cur_rep+300, level+1)
+
+AccumulatorLimits = {
+    InventoryType.OverallRep: 540150,
+    InventoryType.GeneralRep: level_calc(30),
+    InventoryType.MeleeRep: level_calc(30),
+    InventoryType.CutlassRep: level_calc(30),
+    InventoryType.PistolRep: level_calc(30),
+    InventoryType.MusketRep: level_calc(30),
+    InventoryType.DaggerRep: level_calc(30),
+    InventoryType.GrenadeRep: level_calc(30),
+    InventoryType.WandRep: level_calc(30),
+    InventoryType.DollRep: level_calc(30),
+    InventoryType.KettleRep: level_calc(30),
+    InventoryType.CannonRep: level_calc(30),
+    InventoryType.SailingRep: level_calc(30),
+    InventoryType.MonsterRep: level_calc(30),
+    InventoryType.LockpickRep: level_calc(30),
+    InventoryType.GamblingRep: level_calc(30),
+    InventoryType.FishingRep: level_calc(20),
+    InventoryType.PotionsRep: level_calc(20),
+    InventoryType.OverflowRep: level_calc(30)
+}
+
+
+StartingGuns = [(51, 1, 1, 0, 0, 1),    # Cutlass | Originally 1
+                ]
+
+if config.GetBool('want-dev-weapons', False):
+    StartingGuns.extend([
+                (51, 2001, 2, 0, 0, 1), # Pistol | Originally 2001
+                (51, 3501, 3, 0, 0, 1), # Doll | Originally 3501
+                (51, 4501, 4, 0, 0, 1), # Dagger | Originally 4501
+                (51, 5501, 13, 0, 0, 1), # Staff | Originally 5501
+                (51, 8001, 14, 0, 0, 1)  # Grenade | Originally 8001
+                ])
+
+StartingLocatables = StartingGuns
+_StartingSkills = {x: 2 for x in WeaponGlobals.StartingSkills}
+_StartingAmmo = {x: 1 for x in [InventoryType.AmmoLeadShot]}
+
+StackStartsWith.update(_StartingSkills)
+StackStartsWith.update(_StartingAmmo)

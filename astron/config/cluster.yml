@@ -1,0 +1,71 @@
+daemon:
+    name: Developer Cluster
+
+general:
+    eventlogger: 127.0.0.1:29160
+    dc_files:
+        - ../dclass/otp.dc
+        - ../dclass/pirates.dc
+
+messagedirector:
+    bind: 127.0.0.1:29170
+
+uberdogs:
+    - class: ClientServicesManager
+      id: 1000
+      anonymous: true
+
+    - class: DistributedTravelAgent
+      id: 1001
+      anonymous: false
+
+    - class: PiratesFriendsManager
+      id: 1002
+      anonymous: false
+    
+    - class: DistributedCrewMatchManager
+      id: 1003
+      anonymous: false
+
+    - class: DistributedMatchMaker
+      id: 1004
+      anonymous: false
+
+    - class: GuildManager
+      id: 1005
+      anonymous: false
+
+roles:
+    - type: clientagent
+      bind: 0.0.0.0:29150
+      version: "por-alpha-1.0.0"
+      client:
+          relocate: true
+          add_interest: enabled
+          send_hash: false
+          send_version: false
+      channels:
+          min: 1000000000
+          max: 1000001000
+
+    - type: stateserver
+      control: 1100
+
+    - type: database
+      control: 1101
+      generate:
+          min: 100000000
+          max: 399999999
+      backend:
+        type: mongodb
+        server: mongodb://127.0.0.1:27017/porgame
+
+    - type: dbss
+      database: 1101
+      ranges:
+          - min: 100000000
+          - max: 399999999
+
+    - type: eventlogger
+      bind: 127.0.0.1:29160
+      output: ../logs/events-%y%m%d_%H%M%S.log

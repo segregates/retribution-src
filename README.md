@@ -1,11 +1,8 @@
-Pirates Online Retribution Source Code
+<img src="https://i.gyazo.com/0f6e95dd18dde4d88cef526950b33eb0.png"
+align="center">
+
+# Pirates Online Retribution Source Code
 ======================================
-
-
-CANT GET RID OF THE LEAK FOR LONG CAN YOU?
-
-Why dont you just close your shit server?
-
 
 This repository is the source code for Pirates Online Retribution.
 
